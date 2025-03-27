@@ -1,0 +1,30 @@
+.layout {
+  display: flex;
+  height: 100vh;
+}
+
+.mainContent {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.userInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.logoutButton {
+  padding: 5px 10px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  &:hover {
+    background-color: #c82333;
+  }
+}
