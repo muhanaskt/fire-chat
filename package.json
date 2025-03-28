@@ -13,6 +13,7 @@
     "bootstrap": "^5.3.3",
     "dotenv": "^16.4.7",
     "firebase": "^11.5.0",
+    "jotai": "^2.12.2",
     "lucide-react": "^0.484.0",
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.9",

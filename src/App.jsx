@@ -23,8 +23,7 @@ function App() {
             <Route path="/" element={<Layout user={user} setUser={setUser} />}>
 
                 <Route index element={<div>Select a bro to chat!</div>} />
-                <Route path="chat/home" element={<div>Welcome to the chat interface!</div>} />  {/* Chat home route */}
-
+                <Route path="chat/home" element={<div>Welcome to the chat interface!</div>} />  
                 <Route path="dm/:broId" element={<Chat user={user} />} />
             </Route>
             <Route path="/auth" element={<Auth setUser={setUser} />} />

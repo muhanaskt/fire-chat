@@ -32,7 +32,7 @@ const Layout = ({ user, setUser }) => {
           <div className={styles.contentWrapper}>
             <Sidebar user={user} />
             <main className={styles.mainContent}>
-              <Outlet />
+              <Outlet /> 
             </main>
           </div>
         </>

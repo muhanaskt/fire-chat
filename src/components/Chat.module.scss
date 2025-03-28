@@ -112,6 +112,7 @@
   padding: 10px 20px;
   border-top: 1px solid #dadce0;
   display: flex;
+  align-items: flex-end;
   gap: 10px;
   background-color: #fff;
 
@@ -123,28 +124,56 @@
     resize: none;
     font-size: 14px;
     outline: none;
-
+    resize: vertical; // Allow vertical resizing
+    overflow-y: auto; // Enable scrolling but hide scrollbar
+    max-height: 200px; // Prevent infinite growth
+    scrollbar-width: thin; // Makes scrollbar thinner (Firefox)
+    scrollbar-color: transparent transparent; // Hides scrollbar (Firefox)
+  
+    &::-webkit-scrollbar {
+      width: 4px; // Thin scrollbar for Chrome/Safari
+    }
+  
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0.2); // Subtle scrollbar thumb
+      border-radius: 10px;
+    }
+  
+    &::-webkit-scrollbar-track {
+      background: transparent; // Fully hides the track
+    }
     &:focus {
       border-color: #4285f4;
     }
   }
 
   .sendButton {
-    padding: 10px 20px;
+    width: 40px; // Fixed width
+    height: 40px; // Fixed height
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0; // Remove extra padding
     background-color: #4285f4;
     color: white;
     border: none;
-    border-radius: 20px;
+    border-radius: 50%; // Make it circular
     cursor: pointer;
     font-weight: 500;
-
+    flex-shrink: 0; 
+  
     &:hover {
       background-color: #3267d6;
     }
-
+  
     &:disabled {
       background-color: #dadce0;
       cursor: not-allowed;
+    }
+  
+    svg {
+      width: 20px;
+      height: 20px;
     }
   }
 }

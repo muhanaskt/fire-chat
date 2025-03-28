@@ -5,10 +5,13 @@ import styles from "./Navbar.module.scss";
 const Navbar = ({ user, handleLogout }) => {
   return (
     <nav className={styles.navbar}>
-      
       <div className={styles.profile}>
         {user.photoURL ? (
-          <img src={user.photoURL} alt="Profile" className={styles.profilePic} />
+          <img
+            src={user.photoURL}
+            alt="Profile"
+            className={styles.profilePic}
+          />
         ) : (
           <div className={styles.defaultPic}>{user.email[0].toUpperCase()}</div>
         )}

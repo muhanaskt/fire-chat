@@ -3,13 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import styles from './Sidebar.module.scss';
 import { db } from '../firebase';
 import { collection, onSnapshot } from 'firebase/firestore';
+import { selectedFriendAtom } from '../store';
+import { useSetAtom } from 'jotai';
 
 const Sidebar = ({ user }) => {
     const navigate = useNavigate();
-    const [users, setUsers] = useState([]);
+    const setSelectedFriend = useSetAtom(selectedFriendAtom);
 
-    // Debug: Log the current user's UID
-    console.log('Current user UID:', user ? user.uid : 'No user logged in');
+    const [friends, setFriends] = useState([]);
+
 
     // Fetch users from Firestore in real-time
     useEffect(() => {
@@ -17,13 +19,13 @@ const Sidebar = ({ user }) => {
 
         const usersRef = collection(db, 'users');
         const unsubscribe = onSnapshot(usersRef, (snapshot) => {
-            const fetchedUsers = snapshot.docs
+            const  fetchedUsers = snapshot.docs
                 .map(doc => ({
                     id: doc.id,
                     ...doc.data()
                 }))
                 .filter(fetchedUser => fetchedUser.id !== user.uid);
-            setUsers(fetchedUsers);
+                setFriends(fetchedUsers);
             console.log('Fetched users (excluding self):', fetchedUsers);
         }, (error) => {
             console.error('Error fetching users:', error);
@@ -32,25 +34,33 @@ const Sidebar = ({ user }) => {
         return () => unsubscribe();
     }, [user]); // Depend on user
 
-    const handleUserClick = (userId) => {
-        navigate(`/dm/${userId}`);
+    const handleUserClick = (bro) => {
+        setSelectedFriend(bro);
+        navigate(`/dm/${bro.id}`);
     };
 
     return (
         <div className={styles.sidebar}>
-            <h2 className={styles.sidebarTitle}>Squad</h2>
+           
             <ul className={styles.broList}>
-                {users.length === 0 ? (
+                {friends.length === 0 ? (
                     <li className={styles.emptyState}>No bros yet!</li>
                 ) : (
-                    users.map((bro) => (
+                    friends.map((bro) => (
                         <li
                             key={bro.id}
                             className={styles.bro}
-                            onClick={() => handleUserClick(bro.id)}
+                            onClick={() => handleUserClick(bro)}
                         >
-                            <div className={`${styles.statusDot} ${styles[bro.status]}`} />
+                            <div className={styles.profileContainer}>
+                                {bro.photoURL ? (
+                                    <img src={bro.photoURL} alt="Profile" className={styles.profilePic} />
+                                ) : (
+                                    <div className={styles.defaultPic}>{bro.name[0].toUpperCase()}</div>
+                                )}
+                            </div>
                             <span className={styles.broName}>{bro.name}</span>
+                            <div className={`${styles.statusDot} ${styles[bro.status]}`} />
                         </li>
                     ))
                 )}
