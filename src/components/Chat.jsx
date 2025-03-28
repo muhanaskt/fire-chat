@@ -60,9 +60,7 @@ const Chat = ({ user }) => {
             timestamp: new Date().toISOString(),
             senderId: user.uid,
             senderName: user.email.split('@')[0],
-            recipientId: broId, // Store recipient ID for clarity 
-
-
+            recipientId: broId, 
         };
         console.log(newMessage);
         try {
