@@ -1,6 +1,10 @@
 import React, { useState } from "react";
-import { auth, googleProvider } from "../firebase";
-import { signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, googleProvider } from "../../firebase";
+import {
+  signInWithPopup,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
 import styles from "./Auth.module.scss";
 import { useNavigate } from "react-router-dom";
 
@@ -19,9 +23,17 @@ const Auth = ({ setUser }) => {
     try {
       let userCredential;
       if (isSignUp) {
-        userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
       } else {
-        userCredential = await signInWithEmailAndPassword(auth, email, password);
+        userCredential = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
       }
       setUser(userCredential.user);
       navigate("/chat/home");
@@ -68,10 +80,11 @@ const Auth = ({ setUser }) => {
           {isSignUp ? "Sign Up" : "Log In"}
         </button>
       </form>
-      <button onClick={handleGoogleLogin} className={styles.googleButton}>
-        Sign in with Google
-      </button>
-      <button onClick={() => setIsSignUp(!isSignUp)} className={styles.switchButton}>
+   
+      <button
+        onClick={() => setIsSignUp(!isSignUp)}
+        className={styles.switchButton}
+      >
         Switch to {isSignUp ? "Log In" : "Sign Up"}
       </button>
     </div>

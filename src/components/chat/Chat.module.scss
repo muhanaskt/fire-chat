@@ -124,7 +124,7 @@
     resize: none;
     font-size: 14px;
     outline: none;
-    resize: vertical; // Allow vertical resizing
+     
     overflow-y: auto; // Enable scrolling but hide scrollbar
     max-height: 200px; // Prevent infinite growth
     scrollbar-width: thin; // Makes scrollbar thinner (Firefox)

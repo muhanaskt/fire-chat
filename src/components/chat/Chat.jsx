@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "./Chat.module.scss";
 import { Send } from "lucide-react";
-import { db } from "../firebase";
+import { db } from "../../firebase";
 import {
   collection,
   addDoc,
@@ -9,7 +9,7 @@ import {
   query,
   orderBy,
 } from "firebase/firestore";
-import { selectedFriendAtom } from "../store";
+import { selectedFriendAtom } from "../../store";
 import { useAtom } from "jotai";
 
 const Chat = ({ user }) => {
@@ -18,8 +18,6 @@ const Chat = ({ user }) => {
   const [input, setInput] = useState("");
   const messagesEndRef = useRef(null);
   const textareaRef = useRef(null);
- 
-
 
   const chatId = [user.uid, selectedFriend.id].sort().join("-");
 
@@ -34,13 +32,12 @@ const Chat = ({ user }) => {
       }));
       setMessages(fetchedMessages);
 
-    scrollToBottom();
+      scrollToBottom();
     });
 
     return () => unsubscribe();
   }, [chatId]);
 
- 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };

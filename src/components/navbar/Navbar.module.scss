@@ -1,10 +1,9 @@
-// src/components/Navbar.module.scss
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  background-color: #2c3e50;
+  background-color: #3267D6;
   color: white;
 }
 
@@ -33,20 +32,31 @@
   font-weight: bold;
   color: white;
 }
-.contentWrapper {
+
+.profileMenu {
+  position: relative;
   display: flex;
-  flex: 1;
-  margin-top: 60px;
-  height: calc(100vh - 60px);
+  align-items: center;
+}
+
+.profileIcon {
+  font-size: 30px;
+  cursor: pointer;
+  color: white;
 }
 
 .logoutButton {
+  position: absolute;
+  top: 40px;
+  right: 0;
   background-color: #e74c3c;
   border: none;
   padding: 8px 12px;
   color: white;
   cursor: pointer;
   border-radius: 5px;
+  display: block;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .logoutButton:hover {

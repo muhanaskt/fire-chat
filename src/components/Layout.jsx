@@ -1,12 +1,12 @@
 // src/components/Layout.js
 import React from "react";
-import Sidebar from "./Sidebar";
-import Navbar from "./Navbar";
+import Sidebar from "./sidebar";
+import Navbar from "./navbar";
 import styles from "./Layout.module.scss";
 import { Outlet, useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
 import { signOut } from "firebase/auth";
-import Auth from "./Auth";
+import Auth from "./auth";
 
 const Layout = ({ user, setUser }) => {
   const navigate = useNavigate();
@@ -32,7 +32,7 @@ const Layout = ({ user, setUser }) => {
           <div className={styles.contentWrapper}>
             <Sidebar user={user} />
             <main className={styles.mainContent}>
-              <Outlet /> 
+              <Outlet />
             </main>
           </div>
         </>
