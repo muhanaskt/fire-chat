@@ -27,7 +27,6 @@ const Sidebar = ({ user }) => {
           }))
           .filter((fetchedUser) => fetchedUser.id !== user.uid);
         setFriends(fetchedUsers);
-        console.log("Fetched users (excluding self):", fetchedUsers);
       },
       (error) => {
         console.error("Error fetching users:", error);
@@ -35,7 +34,7 @@ const Sidebar = ({ user }) => {
     );
 
     return () => unsubscribe();
-  }, [user]); // Depend on user
+  }, [user]);
 
   const handleUserClick = (bro) => {
     setSelectedFriend(bro);

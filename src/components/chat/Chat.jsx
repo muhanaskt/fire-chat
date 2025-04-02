@@ -1,82 +1,28 @@
-import React, { useState, useEffect, useRef } from "react";
+import React from "react";
 import styles from "./Chat.module.scss";
-import { Send } from "lucide-react";
-import { db } from "../../firebase";
-import {
-  collection,
-  addDoc,
-  onSnapshot,
-  query,
-  orderBy,
-} from "firebase/firestore";
+import { MoreVertical, Send } from "lucide-react";
+import useChat from "./useChat";
 import { selectedFriendAtom } from "../../store";
 import { useAtom } from "jotai";
-
 const Chat = ({ user }) => {
   const [selectedFriend] = useAtom(selectedFriendAtom);
-  const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState("");
-  const messagesEndRef = useRef(null);
-  const textareaRef = useRef(null);
-
-  const chatId = [user.uid, selectedFriend.id].sort().join("-");
-
-  useEffect(() => {
-    const messagesRef = collection(db, "chats", chatId, "messages");
-    const q = query(messagesRef, orderBy("timestamp", "asc"));
-
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const fetchedMessages = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setMessages(fetchedMessages);
-
-      scrollToBottom();
-    });
-
-    return () => unsubscribe();
-  }, [chatId]);
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  const handleSendMessage = async (e) => {
-    e.preventDefault();
-    if (input.trim() === "") return;
-
-    const newMessage = {
-      text: input,
-      timestamp: new Date().toISOString(),
-      senderId: user.uid,
-      senderName: user.email.split("@")[0],
-      recipientId: selectedFriend.id,
-    };
-
-    try {
-      setInput("");
-      if (textareaRef.current) {
-        textareaRef.current.style.height = "40px";
-      }
-      await addDoc(collection(db, "chats", chatId, "messages"), newMessage);
-      setTimeout(scrollToBottom, 100);
-    } catch (error) {
-      console.error("Error sending message:", error.message);
-    }
-  };
-
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSendMessage(e);
-    }
-  };
-
+  const {
+    messages,
+    input,
+    setInput,
+    friendData,
+    messagesEndRef,
+    textareaRef,
+    handleSendMessage,
+    handleKeyPress,
+    loading,
+  } = useChat(user);
+  
+ 
   return (
     <div className={styles.chatApp}>
       <header className={styles.chatHeader}>
-        <h1>{selectedFriend.name}</h1>
+        <h1>{selectedFriend.name || friendData?.name}</h1>
         <div className={styles.userInfo}>
           <span>{user.email.split("@")[0]}</span>
           <div className={styles.statusDot}></div>
@@ -84,9 +30,12 @@ const Chat = ({ user }) => {
       </header>
 
       <div className={styles.messagesContainer}>
-        {messages.length === 0 ? (
+        
+        {loading ? (
+          <div className={styles.loadingState}>Loading...</div>
+        ) : messages.length === 0 ? (
           <div className={styles.emptyState}>
-            Start a conversation with {selectedFriend.name}!
+            Start a conversation with {selectedFriend.name || friendData?.name}!
           </div>
         ) : (
           messages.map((message) => (
@@ -122,7 +71,7 @@ const Chat = ({ user }) => {
             e.target.style.height = e.target.scrollHeight + "px";
           }}
           onKeyDown={handleKeyPress}
-          placeholder={`Message ${selectedFriend.name}...`}
+          placeholder={`Message ${selectedFriend.name || friendData?.name}...`}
           className={styles.messageInput}
           rows="1"
           autoFocus

@@ -21,11 +21,15 @@ const Navbar = ({ user, handleLogout }) => {
       </div>
 
       <div className={styles.profileMenu}>
+      {isMenuOpen && <div className={styles.overlay} onClick={() => setIsMenuOpen(false)}></div>}
+
         <FaUserCircle className={styles.profileIcon} onClick={toggleMenu} />
         {isMenuOpen && (
-          <button onClick={handleLogout} className={styles.logoutButton}>
+           
+            <button onClick={handleLogout} className={styles.logoutButton}>
             Logout
           </button>
+         
         )}
       </div>
     </nav>

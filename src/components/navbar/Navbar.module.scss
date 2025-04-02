@@ -49,16 +49,21 @@
   position: absolute;
   top: 40px;
   right: 0;
-  background-color: #e74c3c;
+  background-color: #e6e0e0;
   border: none;
-  padding: 8px 12px;
-  color: white;
+  padding: 2px 4px;
+  color: rgb(51, 50, 50);
   cursor: pointer;
   border-radius: 5px;
   display: block;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
-
-.logoutButton:hover {
-  background-color: #c0392b;
+ 
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: transparent;
+  z-index: 1;
 }
