@@ -1,9 +1,3 @@
-// $primary-color: #007bff;
-// $border-color: #ccc;
-// $light-gray: #f5f5f5;
-// $medium-gray: #666;
-// $dark-gray: #ddd;
-
 .chatApp {
   display: flex;
   flex-direction: column;
@@ -23,10 +17,38 @@
   justify-content: space-between;
   align-items: center;
 
+  .headerContent {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
   h1 {
     font-size: 20px;
     margin: 0;
     color: #202124;
+  }
+
+  .friendStatus {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #5f6368;
+
+    .statusDot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+
+      &.online {
+        background-color: #0f9d58;  
+      }
+
+      &.offline {
+        background-color: #bdc1c6;  
+      }
+    }
   }
 
   .userInfo {
@@ -57,12 +79,38 @@
     padding: 20px;
   }
 
+  .dateSeparator {
+    position: relative;
+    text-align: center;
+    margin: 20px 0;
+    color: #5f6368;
+    font-size: 12px;
+
+    span {
+      background-color: #fff;
+      padding: 0 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background-color: #dadce0;
+      z-index: 0;
+    }
+  }
+
   .message {
     margin-bottom: 15px;
     display: flex;
 
     .messageBubble {
-      max-width: 70%;
+      
       padding: 10px 15px;
       border-radius: 8px;
       position: relative;
@@ -107,6 +155,36 @@
     }
   }
 }
+ 
+.messageContainer {
+  position: relative;  
+}
+
+.messageMenu {
+  position: absolute;
+  top: -30px; 
+  right: 5px;  
+  background-color: #e6e0e0;
+  border: none;
+  padding: 6px 10px;
+  color: rgb(51, 50, 50);
+  cursor: pointer;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: transparent;
+  z-index: 1;
+}
 
 .inputContainer {
   padding: 10px 20px;
@@ -124,56 +202,58 @@
     resize: none;
     font-size: 14px;
     outline: none;
-     
-    overflow-y: auto; // Enable scrolling but hide scrollbar
-    max-height: 200px; // Prevent infinite growth
-    scrollbar-width: thin; // Makes scrollbar thinner (Firefox)
-    scrollbar-color: transparent transparent; // Hides scrollbar (Firefox)
-  
+    overflow-y: auto;
+    max-height: 200px;
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+
     &::-webkit-scrollbar {
-      width: 4px; // Thin scrollbar for Chrome/Safari
+      width: 4px;
     }
-  
+
     &::-webkit-scrollbar-thumb {
-      background-color: rgba(0, 0, 0, 0.2); // Subtle scrollbar thumb
+      background-color: rgba(0, 0, 0, 0.2);
       border-radius: 10px;
     }
-  
+
     &::-webkit-scrollbar-track {
-      background: transparent; // Fully hides the track
+      background: transparent;
     }
+
     &:focus {
       border-color: #4285f4;
     }
   }
 
   .sendButton {
-    width: 40px; // Fixed width
-    height: 40px; // Fixed height
+    width: 40px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0; // Remove extra padding
+    padding: 0;
     background-color: #4285f4;
     color: white;
     border: none;
-    border-radius: 50%; // Make it circular
+    border-radius: 50%;
     cursor: pointer;
     font-weight: 500;
-    flex-shrink: 0; 
-  
+    flex-shrink: 0;
+
     &:hover {
       background-color: #3267d6;
     }
-  
+
     &:disabled {
       background-color: #dadce0;
       cursor: not-allowed;
     }
-  
+
     svg {
       width: 20px;
       height: 20px;
     }
   }
 }
+
+ 

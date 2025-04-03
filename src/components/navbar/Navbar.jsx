@@ -4,7 +4,7 @@ import { FaUserCircle } from "react-icons/fa";
 
 const Navbar = ({ user, handleLogout }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  
+ 
   const toggleMenu = () => {
     setIsMenuOpen((prev) => !prev);
   };
@@ -13,23 +13,30 @@ const Navbar = ({ user, handleLogout }) => {
     <nav className={styles.navbar}>
       <div className={styles.profile}>
         {user.photoURL ? (
-          <img src={user.photoURL} alt="Profile" className={styles.profilePic} />
+          <img
+            src={user.photoURL}
+            alt="Profile"
+            className={styles.profilePic}
+          />
         ) : (
           <div className={styles.defaultPic}>{user.email[0].toUpperCase()}</div>
         )}
-        <span>{user.displayName || user.email}</span>
+       <span>{user.displayName || user.email.split("@")[0]}</span>
       </div>
 
       <div className={styles.profileMenu}>
-      {isMenuOpen && <div className={styles.overlay} onClick={() => setIsMenuOpen(false)}></div>}
+        {isMenuOpen && (
+          <div
+            className={styles.overlay}
+            onClick={() => setIsMenuOpen(false)}
+          ></div>
+        )}
 
         <FaUserCircle className={styles.profileIcon} onClick={toggleMenu} />
         {isMenuOpen && (
-           
-            <button onClick={handleLogout} className={styles.logoutButton}>
+          <button onClick={handleLogout} className={styles.logoutButton}>
             Logout
           </button>
-         
         )}
       </div>
     </nav>

@@ -5,7 +5,6 @@ import { db } from "../../firebase";
 import { collection, onSnapshot } from "firebase/firestore";
 import { selectedFriendAtom } from "../../store";
 import { useSetAtom } from "jotai";
-
 const Sidebar = ({ user }) => {
   const navigate = useNavigate();
   const setSelectedFriend = useSetAtom(selectedFriendAtom);
@@ -13,7 +12,7 @@ const Sidebar = ({ user }) => {
   const [friends, setFriends] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Fetch users from Firestore in real-time
+ 
   useEffect(() => {
     if (!user) return;
 
@@ -43,7 +42,7 @@ const Sidebar = ({ user }) => {
     navigate(`/dm/${bro.id}`);
   };
 
-  // Filter friends based on search input
+ 
   const filteredFriends = friends.filter((bro) =>
     bro.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -90,6 +89,8 @@ const Sidebar = ({ user }) => {
           ))
         )}
       </ul>
+
+ 
     </div>
   );
 };

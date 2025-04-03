@@ -8,6 +8,9 @@ import {
   orderBy,
   getDoc,
   doc,
+  serverTimestamp,
+  deleteDoc,
+  updateDoc,
 } from "firebase/firestore";
 import { useAtom } from "jotai";
 import { selectedFriendAtom } from "../../store";
@@ -56,6 +59,35 @@ const useChat = (user) => {
     return () => unsubscribe();
   }, [chatId]);
 
+  const deleteMessage = async (messageId, isDeleted) => {
+    try {
+      if (!isDeleted) {
+         setMessages((prevMessages) =>
+          prevMessages.map((msg) =>
+            msg.id === messageId
+              ? { ...msg, text: "This message was deleted", deleted: true }
+              : msg
+          )
+        );
+  
+        await updateDoc(doc(db, "chats", chatId, "messages", messageId), {
+          text: "This message was deleted",
+          deleted: true,
+        });
+      } else {
+         await deleteDoc(doc(db, "chats", chatId, "messages", messageId));
+        setMessages((prevMessages) =>
+          prevMessages.filter((msg) => msg.id !== messageId)
+        );
+      }
+    } catch (error) {
+      console.error("Error deleting message:", error);
+    }
+  };
+  
+
+
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -70,6 +102,7 @@ const useChat = (user) => {
       senderId: user.uid,
       senderName: user.email.split("@")[0],
       recipientId: selectedFriend.id,
+
     };
 
     try {
@@ -101,6 +134,7 @@ const useChat = (user) => {
     handleSendMessage,
     handleKeyPress,
     loading,
+    deleteMessage,
   };
 };
 
