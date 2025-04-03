@@ -1,10 +1,38 @@
 import React, { useState } from "react";
 import styles from "./Navbar.module.scss";
 import { FaUserCircle } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { signOut } from "firebase/auth";
+import { doc, updateDoc } from "firebase/firestore";
+import { auth, db } from "../../firebase";
 
-const Navbar = ({ user, handleLogout }) => {
+const Navbar = ({ user }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
- 
+  const navigate = useNavigate();
+  const handleLogout = async () => {
+
+    if (!user?.uid) return;
+
+    const userRef = doc(db, "users", user.uid);
+
+    try {
+      
+      await updateDoc(userRef, { 
+        status: false, 
+        lastSeen: new Date().toISOString() 
+      });
+
+      await signOut(auth);
+      
+      
+
+      navigate("/auth"); 
+
+    } catch (error) {
+      console.error("Logout error:", error.message);
+    }
+  };
+
   const toggleMenu = () => {
     setIsMenuOpen((prev) => !prev);
   };
