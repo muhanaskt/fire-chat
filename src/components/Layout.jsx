@@ -12,10 +12,10 @@ const Layout = ({ user, setUser }) => {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
+    navigate("/auth");
     try {
       await signOut(auth);
       setUser(null);
-      navigate("/auth");
     } catch (error) {
       console.error("Logout error:", error.message);
     }
@@ -26,9 +26,9 @@ const Layout = ({ user, setUser }) => {
       {user ? (
         <>
           {/* Fixed Navbar at the Top */}
-          <Navbar user={user} handleLogout={handleLogout} />
 
           {/* Content Wrapper for Sidebar and Main Content */}
+            <Navbar user={user} handleLogout={handleLogout} /> 
           <div className={styles.contentWrapper}>
             <Sidebar user={user} />
             <main className={styles.mainContent}>

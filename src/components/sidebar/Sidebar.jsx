@@ -11,10 +11,11 @@ const Sidebar = ({ user }) => {
   const setSelectedFriend = useSetAtom(selectedFriendAtom);
 
   const [friends, setFriends] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   // Fetch users from Firestore in real-time
   useEffect(() => {
-    if (!user) return; // Skip if no user is logged in
+    if (!user) return;
 
     const usersRef = collection(db, "users");
     const unsubscribe = onSnapshot(
@@ -36,18 +37,36 @@ const Sidebar = ({ user }) => {
     return () => unsubscribe();
   }, [user]);
 
+  // Handle friend selection
   const handleUserClick = (bro) => {
     setSelectedFriend(bro);
     navigate(`/dm/${bro.id}`);
   };
 
+  // Filter friends based on search input
+  const filteredFriends = friends.filter((bro) =>
+    bro.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className={styles.sidebar}>
+      {/* Search Bar */}
+      <div className={styles.searchContainer}>
+        <input
+          type="text"
+          placeholder="Search..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className={styles.searchInput}
+        />
+      </div>
+
+      {/* Friend List */}
       <ul className={styles.broList}>
-        {friends.length === 0 ? (
-          <li className={styles.emptyState}>No bros yet!</li>
+        {filteredFriends.length === 0 ? (
+          <li className={styles.emptyState}>No found!</li>
         ) : (
-          friends.map((bro) => (
+          filteredFriends.map((bro) => (
             <li
               key={bro.id}
               className={styles.bro}
@@ -67,7 +86,6 @@ const Sidebar = ({ user }) => {
                 )}
               </div>
               <span className={styles.broName}>{bro.name}</span>
-              <div className={`${styles.statusDot} ${styles[bro.status]}`} />
             </li>
           ))
         )}
