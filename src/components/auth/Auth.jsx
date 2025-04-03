@@ -81,7 +81,7 @@ const Auth = ({ setUser }) => {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
   
-        // ✅ Set status true on login
+   
         await setDoc(
           doc(db, "users", user.uid),
           { status: true, lastSeen: new Date().toISOString() },
@@ -100,7 +100,7 @@ const Auth = ({ setUser }) => {
   };
 
 
-  
+
   return (
     <div className={styles.authContainer}>
       <h2>{isSignUp ? "Sign Up" : "Log In"}</h2>
