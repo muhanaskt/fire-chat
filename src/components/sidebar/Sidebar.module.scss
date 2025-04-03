@@ -88,3 +88,25 @@
   color: #6c757d;
   text-align: center;
 }
+
+.searchContainer {
+  padding: 10px;
+   
+  display: flex;
+  justify-content: center;
+}
+
+.searchInput {
+  width: 90%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s ease;
+
+  &:focus {
+    border-color: #3267D6;
+    box-shadow: 0 0 5px rgba(50, 103, 214, 0.5);
+  }
+}
