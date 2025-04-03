@@ -78,12 +78,8 @@ const Chat = ({ user }) => {
     return acc;
   }, {});
 
-  const friendStatus =
-    friendData?.status !== undefined
-      ? friendData.status
-      : selectedFriend?.status;
-  const friendLastSeen =
-    friendData?.lastSeen || selectedFriend?.lastSeen || null;
+  const friendStatus = friendData?.status ?? selectedFriend?.status;
+  const friendLastSeen = friendData?.lastSeen || selectedFriend?.lastSeen || null;
 
   const statusText =
     friendStatus === true
@@ -91,6 +87,7 @@ const Chat = ({ user }) => {
       : friendLastSeen
       ? formatLastSeen(friendLastSeen)
       : "Offline";
+     
 
   return (
     <div className={styles.chatApp}>

@@ -7,15 +7,23 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
 import { signOut } from "firebase/auth";
 import Auth from "./auth";
+ 
 
 const Layout = ({ user, setUser }) => {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    navigate("/auth");
-    try {
+    if (!user?.id) return;
+  
+  const userRef = doc(db, "users", user.id);
+  
+  
+  try {
+      await updateDoc(userRef, { status: false, lastSeen: new Date().toISOString() });
+      
       await signOut(auth);
       setUser(null);
+      navigate("/auth");
     } catch (error) {
       console.error("Logout error:", error.message);
     }
@@ -28,7 +36,7 @@ const Layout = ({ user, setUser }) => {
           {/* Fixed Navbar at the Top */}
 
           {/* Content Wrapper for Sidebar and Main Content */}
-            <Navbar user={user} handleLogout={handleLogout} /> 
+          <Navbar user={user} handleLogout={handleLogout} />
           <div className={styles.contentWrapper}>
             <Sidebar user={user} />
             <main className={styles.mainContent}>
