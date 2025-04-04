@@ -27,7 +27,8 @@ const Auth = ({ setUser }) => {
   };
 
   const errorMessages = {
-    "auth/email-already-in-use": "This email is already registered. Please log in.",
+    "auth/email-already-in-use":
+      "This email is already registered. Please log in.",
     "auth/user-not-found": "No account found with this email.",
     "auth/wrong-password": "Incorrect password. Please try again.",
     "auth/invalid-email": "Invalid email format.",
@@ -39,7 +40,7 @@ const Auth = ({ setUser }) => {
     e.preventDefault();
     setError(null);
     setLoading(true);
-  
+
     if (!validateEmail(email)) {
       setError("Please enter a valid email address.");
       setLoading(false);
@@ -50,7 +51,7 @@ const Auth = ({ setUser }) => {
       setLoading(false);
       return;
     }
-  
+
     try {
       if (isSignUp) {
         const signInMethods = await fetchSignInMethodsForEmail(auth, email);
@@ -59,10 +60,14 @@ const Auth = ({ setUser }) => {
           setLoading(false);
           return;
         }
-  
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
         const user = userCredential.user;
-  
+
         await setDoc(
           doc(db, "users", user.uid),
           {
@@ -70,36 +75,39 @@ const Auth = ({ setUser }) => {
             name: user.email.split("@")[0],
             email: user.email,
             photoURL: user.photoURL || "",
-            lastSeen: new Date().toISOString(),  
+            lastSeen: new Date().toISOString(),
           },
           { merge: true }
         );
-  
+
         setUser(user);
         navigate("/chat/home");
       } else {
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const userCredential = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
         const user = userCredential.user;
-  
-   
+
         await setDoc(
           doc(db, "users", user.uid),
           { status: true, lastSeen: new Date().toISOString() },
           { merge: true }
         );
-  
+
         setUser(user);
         navigate("/chat/home");
       }
     } catch (error) {
-      setError(errorMessages[error.code] || "Authentication failed. Please try again.");
+      setError(
+        errorMessages[error.code] || "Authentication failed. Please try again."
+      );
       console.error("Auth error:", error.message);
     } finally {
       setLoading(false);
     }
   };
-
-
 
   return (
     <div className={styles.authContainer}>
@@ -136,7 +144,10 @@ const Auth = ({ setUser }) => {
         </button>
       </form>
 
-      <button onClick={() => setIsSignUp(!isSignUp)} className={styles.switchButton}>
+      <button
+        onClick={() => setIsSignUp(!isSignUp)}
+        className={styles.switchButton}
+      >
         Switch to {isSignUp ? "Log In" : "Sign Up"}
       </button>
 

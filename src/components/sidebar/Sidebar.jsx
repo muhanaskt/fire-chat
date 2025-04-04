@@ -5,14 +5,13 @@ import { db } from "../../firebase";
 import { collection, onSnapshot } from "firebase/firestore";
 import { selectedFriendAtom } from "../../store";
 import { useSetAtom } from "jotai";
-const Sidebar = ({ user }) => {
+const Sidebar = ({ user, classes }) => {
   const navigate = useNavigate();
   const setSelectedFriend = useSetAtom(selectedFriendAtom);
 
   const [friends, setFriends] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
- 
   useEffect(() => {
     if (!user) return;
 
@@ -42,14 +41,12 @@ const Sidebar = ({ user }) => {
     navigate(`/dm/${bro.id}`);
   };
 
- 
   const filteredFriends = friends.filter((bro) =>
     bro.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
     <div className={styles.sidebar}>
-      {/* Search Bar */}
       <div className={styles.searchContainer}>
         <input
           type="text"
@@ -60,7 +57,6 @@ const Sidebar = ({ user }) => {
         />
       </div>
 
-      {/* Friend List */}
       <ul className={styles.broList}>
         {filteredFriends.length === 0 ? (
           <li className={styles.emptyState}>No found!</li>
@@ -79,7 +75,9 @@ const Sidebar = ({ user }) => {
                     className={styles.profilePic}
                   />
                 ) : (
-                  <div className={styles.defaultPic}>
+                  <div
+                    className={`${styles.defaultPic} border border-2 border-white`}
+                  >
                     {bro.name[0].toUpperCase()}
                   </div>
                 )}
@@ -89,8 +87,6 @@ const Sidebar = ({ user }) => {
           ))
         )}
       </ul>
-
- 
     </div>
   );
 };

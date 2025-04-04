@@ -79,7 +79,8 @@ const Chat = ({ user }) => {
   }, {});
 
   const friendStatus = friendData?.status ?? selectedFriend?.status;
-  const friendLastSeen = friendData?.lastSeen || selectedFriend?.lastSeen || null;
+  const friendLastSeen =
+    friendData?.lastSeen || selectedFriend?.lastSeen || null;
 
   const statusText =
     friendStatus === true
@@ -87,7 +88,6 @@ const Chat = ({ user }) => {
       : friendLastSeen
       ? formatLastSeen(friendLastSeen)
       : "Offline";
-     
 
   return (
     <div className={styles.chatApp}>
@@ -131,11 +131,12 @@ const Chat = ({ user }) => {
                       className={styles.messageBubble}
                       onClick={() => toggleMenu(message.id)}
                     >
-                      
-                      {isMenuOpen === message.id &&  (
+                      {isMenuOpen === message.id && (
                         <div
                           className={styles.messageMenu}
-                          onClick={() => deleteMessage(message.id , message.deleted)}
+                          onClick={() =>
+                            deleteMessage(message.id, message.deleted)
+                          }
                         >
                           <FiTrash />
                         </div>
@@ -144,16 +145,17 @@ const Chat = ({ user }) => {
                         {message.senderName}
                       </span>
 
-                       <p
-                        className={`${styles.messageText} ${
-                          message.deleted ?  "fst-italic text-secondary opacity-75" : ""
+                      <p
+                        className={`${styles.message_text} ${
+                          message.deleted
+                            ? "fst-italic text-secondary opacity-75"
+                            : ""
                         }`}
                       >
-                        {message.deleted 
+                        {message.deleted
                           ? "This message was deleted"
                           : message.text}
                       </p>
-
 
                       <div className={styles.messageFooter}>
                         <span className={styles.timestamp}>

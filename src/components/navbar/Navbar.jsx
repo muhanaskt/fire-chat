@@ -10,24 +10,19 @@ const Navbar = ({ user }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   const handleLogout = async () => {
-
     if (!user?.uid) return;
 
     const userRef = doc(db, "users", user.uid);
 
     try {
-      
-      await updateDoc(userRef, { 
-        status: false, 
-        lastSeen: new Date().toISOString() 
+      await updateDoc(userRef, {
+        status: false,
+        lastSeen: new Date().toISOString(),
       });
 
       await signOut(auth);
-      
-      
 
-      navigate("/auth"); 
-
+      navigate("/auth");
     } catch (error) {
       console.error("Logout error:", error.message);
     }
@@ -49,7 +44,7 @@ const Navbar = ({ user }) => {
         ) : (
           <div className={styles.defaultPic}>{user.email[0].toUpperCase()}</div>
         )}
-       <span>{user.displayName || user.email.split("@")[0]}</span>
+        <span>{user.displayName || user.email.split("@")[0]}</span>
       </div>
 
       <div className={styles.profileMenu}>
