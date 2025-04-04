@@ -12,6 +12,7 @@ import { db } from "../../firebase";
 import { Eye, EyeOff } from "lucide-react";
 
 const Auth = ({ setUser }) => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSignUp, setIsSignUp] = useState(false);
@@ -46,8 +47,15 @@ const Auth = ({ setUser }) => {
       setLoading(false);
       return;
     }
+
     if (password.length < 6) {
       setError("Password must be at least 6 characters long.");
+      setLoading(false);
+      return;
+    }
+
+    if (isSignUp && name.trim().length < 2) {
+      setError("Please enter a valid name.");
       setLoading(false);
       return;
     }
@@ -72,7 +80,7 @@ const Auth = ({ setUser }) => {
           doc(db, "users", user.uid),
           {
             id: user.uid,
-            name: user.email.split("@")[0],
+            name: name.trim(),
             email: user.email,
             photoURL: user.photoURL || "",
             lastSeen: new Date().toISOString(),
@@ -114,6 +122,16 @@ const Auth = ({ setUser }) => {
       <h2>{isSignUp ? "Sign Up" : "Log In"}</h2>
       {error && <p className={styles.error}>{error}</p>}
       <form onSubmit={handleAuth}>
+        {isSignUp && (
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Name"
+            required
+            className={styles.input}
+          />
+        )}
         <input
           type="email"
           value={email}
